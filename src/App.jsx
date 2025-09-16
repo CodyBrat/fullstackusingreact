@@ -8,10 +8,13 @@ import { MacbookScrollDemo } from './components/MacbookScrolldemo'
 import { NavbarDemo } from './components/NavbarDemo'
 import friendsImage from './assets/friends2.png'
 import  TextPressure  from './components/Textpressure'
+import {SmoothCursor} from './components/cursor'
 
 function App() {
   return (
     <div className="relative min-h-screen">
+      <div>
+        <SmoothCursor />
       <BackgroundBeamsDemo />
       <div className="relative z-10 flex items-center justify-center h-screen">
         <div style={{width: '100%', maxWidth: '1200px'}}>
@@ -34,6 +37,7 @@ function App() {
         <MacbookScrollDemo />
       </div> */}
       <NavbarDemo />
+    </div>
     </div>
   )
 }
