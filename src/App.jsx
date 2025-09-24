@@ -9,6 +9,7 @@ import { NavbarDemo } from './components/NavbarDemo'
 import friendsImage from './assets/friends2.png'
 import  TextPressure  from './components/Textpressure'
 import {SmoothCursor} from './components/cursor'
+import Carousel from './components/Carousel'
 
 function App() {
   return (
@@ -37,6 +38,16 @@ function App() {
         <MacbookScrollDemo />
       </div> */}
       <NavbarDemo />
+      <div style={{ height: '600px', position: 'relative', alignItems: 'center', justifyContent: 'center', display: 'flex', flexDirection: 'column' }}>
+        <Carousel
+          baseWidth={800}
+          autoplay={true}
+          autoplayDelay={3000}
+          pauseOnHover={true}
+          loop={true}
+          round={false}
+        />
+      </div>
     </div>
     </div>
   )
