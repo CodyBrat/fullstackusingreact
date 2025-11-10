@@ -57,9 +57,9 @@ function App() {
         <MacbookScrollDemo />
       </div> */}
       <NavbarDemo />
-      <div className="bg-gray-900 min-h-screen flex items-center justify-center">
-      <Carousel items={tShirtItems} animationDuration={1} />
-    </div>
+      <div className="h-full w-334">
+        <Carousel />
+      </div>
     </div>
     </div>
   )

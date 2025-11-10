@@ -1,4 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Stack+Sans+Headline:wght@200..700&display=swap');
+
+body {
+  font-family: "Stack Sans Headline", sans-serif;
+}
+
 #root {
   max-width: 1280px;
   margin: 0 auto;
@@ -52,3 +58,20 @@
   text-align: center;
   margin-top: 150px;
 }
+
+@keyframes gradientMove {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.animate-gradientMove {
+  animation: gradientMove 12s ease infinite;
+}
+
