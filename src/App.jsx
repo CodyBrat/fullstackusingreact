@@ -11,6 +11,25 @@ import  TextPressure  from './components/Textpressure'
 import {SmoothCursor} from './components/cursor'
 import Carousel from './components/Carousel'
 
+
+
+const tShirtItems = [
+  {
+    id: 1,
+    title: "Cosmic Voyager",
+    description: "A tee for the dreamers and explorers.",
+    imgSrc: "/path/to/your/tshirt-1.png", // Use transparent PNGs for best results
+    bgSrc: "/path/to/your/background-1.jpg",
+  },
+  {
+    id: 2,
+    title: "Urban Abstract",
+    description: "Wear a piece of the city's soul.",
+    imgSrc: "/path/to/your/tshirt-2.png",
+    bgSrc: "/path/to/your/background-2.jpg",
+  },
+  // ... more items
+];
 function App() {
   return (
     <div className="relative min-h-screen">
@@ -38,16 +57,9 @@ function App() {
         <MacbookScrollDemo />
       </div> */}
       <NavbarDemo />
-      <div style={{ height: '600px', position: 'relative', alignItems: 'center', justifyContent: 'center', display: 'flex', flexDirection: 'column' }}>
-        <Carousel
-          baseWidth={800}
-          autoplay={true}
-          autoplayDelay={3000}
-          pauseOnHover={true}
-          loop={true}
-          round={false}
-        />
-      </div>
+      <div className="bg-gray-900 min-h-screen flex items-center justify-center">
+      <Carousel items={tShirtItems} animationDuration={1} />
+    </div>
     </div>
     </div>
   )

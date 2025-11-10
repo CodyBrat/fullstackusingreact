@@ -1,219 +1,166 @@
-import { useEffect, useState, useRef } from 'react';
-import { motion, useMotionValue, useTransform } from 'motion/react';
-// replace icons with your own if needed
-import { FiCircle, FiCode, FiFileText, FiLayers, FiLayout } from 'react-icons/fi';
+import { useRef, useState, useLayoutEffect } from "react";
+import gsap from "gsap";
+import { FiShoppingCart, FiChevronLeft, FiChevronRight } from "react-icons/fi";
 
+// NOTE: I've updated the default items to include image and background sources.
 const DEFAULT_ITEMS = [
   {
-    title: 'Text Animations',
-    description: 'Cool text animations for your projects.',
     id: 1,
-    icon: <FiFileText className="h-[16px] w-[16px] text-white" />
+    title: "Cosmic Voyager",
+    description: "A tee for the dreamers and explorers of the universe.",
+    imgSrc: "https://images.unsplash.com/photo-1503341504253-dff481648536?q=80&w=1974&auto=format&fit=crop",
+    bgSrc: "https://images.unsplash.com/photo-1503341504253-dff481648536?q=80&w=1974&auto=format&fit=crop",
   },
   {
-    title: 'Animations',
-    description: 'Smooth animations for your projects.',
     id: 2,
-    icon: <FiCircle className="h-[16px] w-[16px] text-white" />
+    title: "Urban Abstract",
+    description: "Wear a piece of the city's soul.",
+    imgSrc: "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?q=80&w=2070&auto=format&fit=crop",
+    bgSrc: "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?q=80&w=2070&auto=format&fit=crop",
   },
   {
-    title: 'Components',
-    description: 'Reusable components for your projects.',
     id: 3,
-    icon: <FiLayers className="h-[16px] w-[16px] text-white" />
+    title: "Retro Wave",
+    description: "Ride the vibrant waves of the 80s aesthetic.",
+    imgSrc: "https://images.unsplash.com/photo-1503341455253-b2e723bb3dbb?q=80&w=2070&auto=format&fit=crop",
+    bgSrc: "https://images.unsplash.com/photo-1503341455253-b2e723bb3dbb?q=80&w=2070&auto=format&fit=crop",
   },
-  {
-    title: 'Backgrounds',
-    description: 'Beautiful backgrounds and patterns for your projects.',
-    id: 4,
-    icon: <FiLayout className="h-[16px] w-[16px] text-white" />
-  },
-  {
-    title: 'Common UI',
-    description: 'Common UI components are coming soon!',
-    id: 5,
-    icon: <FiCode className="h-[16px] w-[16px] text-white" />
-  }
 ];
 
-const DRAG_BUFFER = 0;
-const VELOCITY_THRESHOLD = 500;
-const GAP = 16;
-const SPRING_OPTIONS = { type: 'spring', stiffness: 300, damping: 30 };
-
-export default function Carousel({
+// Main Carousel Component
+export default function ModernCarousel({
   items = DEFAULT_ITEMS,
-  baseWidth = 300,
-  
-  autoplay = false,
-  autoplayDelay = 3000,
-  pauseOnHover = false,
-  loop = false,
-  round = false
+  animationDuration = 0.8, // Prop for animation time
 }) {
-  const containerPadding = 16;
-  const itemWidth = baseWidth - containerPadding * 2;
-  const trackItemOffset = itemWidth + GAP;
-
-  const carouselItems = loop ? [...items, items[0]] : items;
   const [currentIndex, setCurrentIndex] = useState(0);
-  const x = useMotionValue(0);
-  const [isHovered, setIsHovered] = useState(false);
-  const [isResetting, setIsResetting] = useState(false);
-
+  const [isAnimating, setIsAnimating] = useState(false);
+  
+  const cardsRef = useRef([]);
   const containerRef = useRef(null);
-  useEffect(() => {
-    if (pauseOnHover && containerRef.current) {
-      const container = containerRef.current;
-      const handleMouseEnter = () => setIsHovered(true);
-      const handleMouseLeave = () => setIsHovered(false);
-      container.addEventListener('mouseenter', handleMouseEnter);
-      container.addEventListener('mouseleave', handleMouseLeave);
-      return () => {
-        container.removeEventListener('mouseenter', handleMouseEnter);
-        container.removeEventListener('mouseleave', handleMouseLeave);
-      };
-    }
-  }, [pauseOnHover]);
+  const prevIndexRef = useRef(currentIndex);
 
-  useEffect(() => {
-    if (autoplay && (!pauseOnHover || !isHovered)) {
-      const timer = setInterval(() => {
-        setCurrentIndex(prev => {
-          if (prev === items.length - 1 && loop) {
-            return prev + 1;
-          }
-          if (prev === carouselItems.length - 1) {
-            return loop ? 0 : prev;
-          }
-          return prev + 1;
-        });
-      }, autoplayDelay);
-      return () => clearInterval(timer);
-    }
-  }, [autoplay, autoplayDelay, isHovered, loop, items.length, carouselItems.length, pauseOnHover]);
+  useLayoutEffect(() => {
+    prevIndexRef.current = currentIndex;
+  }, [currentIndex]);
 
-  const effectiveTransition = isResetting ? { duration: 0 } : SPRING_OPTIONS;
-
-  const handleAnimationComplete = () => {
-    if (loop && currentIndex === carouselItems.length - 1) {
-      setIsResetting(true);
-      x.set(0);
-      setCurrentIndex(0);
-      setTimeout(() => setIsResetting(false), 50);
-    }
+  const handleNext = () => {
+    if (isAnimating) return;
+    const nextIndex = (currentIndex + 1) % items.length;
+    animate(currentIndex, nextIndex, "next");
   };
 
-  const handleDragEnd = (_, info) => {
-    const offset = info.offset.x;
-    const velocity = info.velocity.x;
-    if (offset < -DRAG_BUFFER || velocity < -VELOCITY_THRESHOLD) {
-      if (loop && currentIndex === items.length - 1) {
-        setCurrentIndex(currentIndex + 1);
-      } else {
-        setCurrentIndex(prev => Math.min(prev + 1, carouselItems.length - 1));
-      }
-    } else if (offset > DRAG_BUFFER || velocity > VELOCITY_THRESHOLD) {
-      if (loop && currentIndex === 0) {
-        setCurrentIndex(items.length - 1);
-      } else {
-        setCurrentIndex(prev => Math.max(prev - 1, 0));
-      }
-    }
+  const handlePrev = () => {
+    if (isAnimating) return;
+    const nextIndex = (currentIndex - 1 + items.length) % items.length;
+    animate(currentIndex, nextIndex, "prev");
   };
 
-  const dragProps = loop
-    ? {}
-    : {
-        dragConstraints: {
-          left: -trackItemOffset * (carouselItems.length - 1),
-          right: 0
-        }
-      };
+  const animate = (oldIndex, newIndex, direction) => {
+    if (isAnimating) return;
+    setIsAnimating(true);
+    
+    const oldCard = cardsRef.current[oldIndex];
+    const newCard = cardsRef.current[newIndex];
+
+    const timeline = gsap.timeline({
+      onComplete: () => {
+        setIsAnimating(false);
+        setCurrentIndex(newIndex);
+      },
+    });
+
+    const xPercent = direction === "next" ? -100 : 100;
+    const rotateY = direction === "next" ? 45 : -45;
+
+    // Set initial state for the new card
+    gsap.set(newCard, {
+      display: 'flex',
+      xPercent: -xPercent,
+      rotateY: -rotateY,
+      autoAlpha: 1,
+      zIndex: 10
+    });
+     gsap.set(oldCard, { zIndex: 5 });
+
+    // Animate old card out
+    timeline.to(oldCard, {
+      xPercent: xPercent,
+      rotateY: rotateY,
+      autoAlpha: 0,
+      duration: animationDuration,
+      ease: "power3.inOut",
+    }, 0);
+
+    // Animate new card in
+    timeline.to(newCard, {
+      xPercent: 0,
+      rotateY: 0,
+      duration: animationDuration,
+      ease: "power3.inOut",
+    }, 0);
+  };
+
+  const activeItem = items[currentIndex];
 
   return (
     <div
       ref={containerRef}
-      className={`relative overflow-hidden p-4 ${
-        round ? 'rounded-full border border-white' : 'rounded-[24px] border border-[#222]'
-      }`}
-      style={{
-        width: `${baseWidth}px`,
-        ...(round && { height: `${baseWidth}px` })
-      }}
+      className="relative flex flex-col items-center justify-center w-full max-w-2xl mx-auto h-[500px] font-sans"
     >
-      <motion.div
-        className="flex"
-        drag="x"
-        {...dragProps}
-        style={{
-          width: itemWidth,
-          gap: `${GAP}px`,
-          perspective: 1000,
-          perspectiveOrigin: `${currentIndex * trackItemOffset + itemWidth / 2}px 50%`,
-          x
-        }}
-        onDragEnd={handleDragEnd}
-        animate={{ x: -(currentIndex * trackItemOffset) }}
-        transition={effectiveTransition}
-        onAnimationComplete={handleAnimationComplete}
-      >
-        {carouselItems.map((item, index) => {
-          const range = [-(index + 1) * trackItemOffset, -index * trackItemOffset, -(index - 1) * trackItemOffset];
-          const outputRange = [90, 0, -90];
-          // eslint-disable-next-line react-hooks/rules-of-hooks
-          const rotateY = useTransform(x, range, outputRange, { clamp: false });
-          return (
-            <motion.div
-              key={index}
-              className={`relative shrink-0 flex flex-col ${
-                round
-                  ? 'items-center justify-center text-center bg-[#060010] border-0'
-                  : 'items-start justify-between bg-[#222] border border-[#222] rounded-[12px]'
-              } overflow-hidden cursor-grab active:cursor-grabbing`}
-              style={{
-                width: itemWidth,
-                height: round ? itemWidth : '100%',
-                rotateY: rotateY,
-                ...(round && { borderRadius: '50%' })
-              }}
-              transition={effectiveTransition}
-            >
-              <div className={`${round ? 'p-0 m-0' : 'mb-4 p-5'}`}>
-                <span className="flex h-[28px] w-[28px] items-center justify-center rounded-full bg-[#060010]">
-                  {item.icon}
-                </span>
-              </div>
-              <div className="p-5">
-                <div className="mb-1 font-black text-lg text-white">{item.title}</div>
-                <p className="text-sm text-white">{item.description}</p>
-              </div>
-            </motion.div>
-          );
-        })}
-      </motion.div>
-      <div className={`flex w-full justify-center ${round ? 'absolute z-20 bottom-12 left-1/2 -translate-x-1/2' : ''}`}>
-        <div className="mt-4 flex w-[150px] justify-between px-8">
-          {items.map((_, index) => (
-            <motion.div
-              key={index}
-              className={`h-2 w-2 rounded-full cursor-pointer transition-colors duration-150 ${
-                currentIndex % items.length === index
-                  ? round
-                    ? 'bg-white'
-                    : 'bg-[#333333]'
-                  : round
-                    ? 'bg-[#555]'
-                    : 'bg-[rgba(51,51,51,0.4)]'
-              }`}
-              animate={{
-                scale: currentIndex % items.length === index ? 1.2 : 1
-              }}
-              onClick={() => setCurrentIndex(index)}
-              transition={{ duration: 0.15 }}
-            />
-          ))}
-        </div>
+      {/* Blurred Background */}
+      <div className="absolute inset-0 w-full h-full">
+        {items.map((item, i) => (
+          <div
+            key={item.id}
+            className="absolute inset-0 w-full h-full bg-cover bg-center transition-opacity duration-1000"
+            style={{
+              backgroundImage: `url(${item.bgSrc})`,
+              opacity: i === currentIndex ? 1 : 0,
+            }}
+          />
+        ))}
+        <div className="absolute inset-0 w-full h-full bg-black/50 backdrop-blur-xl" />
+      </div>
+
+      {/* Card Carousel */}
+      <div className="relative w-[300px] h-[400px] [perspective:1000px]">
+        {items.map((item, i) => (
+          <div
+            key={item.id}
+            ref={(el) => (cardsRef.current[i] = el)}
+            className="absolute top-0 left-0 w-full h-full flex-col justify-between p-6 bg-white/10 rounded-2xl shadow-2xl backdrop-blur-md border border-white/20"
+            style={{
+                display: i === currentIndex ? 'flex' : 'none',
+                backfaceVisibility: 'hidden', // Improves rendering during rotation
+            }}
+          >
+            <div className="flex-grow flex items-center justify-center">
+                <img src={item.imgSrc} alt={item.title} className="max-w-full max-h-full object-contain drop-shadow-2xl"/>
+            </div>
+            <div className="text-center">
+              <h2 className="text-2xl font-bold text-white">{item.title}</h2>
+              <p className="text-sm text-gray-200 mt-1">{item.description}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Controls */}
+      <div className="flex items-center justify-between w-[350px] mt-8">
+        <button
+          onClick={handlePrev}
+          disabled={isAnimating}
+          className="p-3 bg-white/10 rounded-full hover:bg-white/20 disabled:opacity-50 transition"
+        >
+          <FiChevronLeft className="h-6 w-6 text-white" />
+        </button>
+        <button
+          onClick={handleNext}
+          disabled={isAnimating}
+          className="p-3 bg-white/10 rounded-full hover:bg-white/20 disabled:opacity-50 transition"
+        >
+          <FiChevronRight className="h-6 w-6 text-white" />
+        </button>
       </div>
     </div>
   );
