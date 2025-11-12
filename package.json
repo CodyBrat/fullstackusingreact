@@ -10,10 +10,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@nextui-org/react": "^2.6.11",
     "@tabler/icons-react": "^3.34.1",
     "@tailwindcss/vite": "^4.1.13",
     "clsx": "^2.1.1",
-    "framer-motion": "^12.23.12",
+    "framer-motion": "^12.23.24",
     "gsap": "^3.13.0",
     "lucide-react": "^0.553.0",
     "motion": "^12.23.19",
@@ -23,7 +24,8 @@
     "react-router-dom": "^7.9.1",
     "styled-components": "^6.1.19",
     "tailwind-merge": "^3.3.1",
-    "tailwindcss": "^4.1.13"
+    "tailwindcss": "^4.1.13",
+    "tailwindcss-animated": "^2.0.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.33.0",
