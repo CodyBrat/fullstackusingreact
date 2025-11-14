@@ -1,18 +1,33 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { Button, Image } from "@nextui-org/react";
 import { FaHeart } from "react-icons/fa";
 import { Rating } from "./Rating";
+import { useCart } from "../../context/CartContext";
 
 export function ProductCard({ product, index }) {
-  const baseImgUrl =
-    "https://nextuipro.nyc3.cdn.digitaloceanspaces.com/components-images/shoes";
+  const navigate = useNavigate();
+  const { addToCart, toggleWishlist, isInWishlist } = useCart();
+  const baseImgUrl = "https://nextuipro.nyc3.cdn.digitaloceanspaces.com/components-images/shoes";
+  const inWishlist = isInWishlist(product.id);
+
+  const handleAddToCart = (e) => {
+    e.stopPropagation();
+    addToCart(product);
+  };
+
+  const handleWishlist = (e) => {
+    e.stopPropagation();
+    toggleWishlist(product);
+  };
 
   return (
     <div
-      className="relative flex flex-col w-[340px] rounded-3xl overflow-hidden 
+      onClick={() => navigate(`/product/${product.id}`)}
+      className="relative flex flex-col w-full max-w-[340px] mx-auto rounded-3xl overflow-hidden 
                  bg-white/5 backdrop-blur-xl border border-white/10
                  shadow-[0_0_25px_rgba(0,0,0,0.25)] hover:shadow-[0_0_45px_rgba(0,0,0,0.35)]
-                 transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] group"
+                 transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] group cursor-pointer"
       style={{
         fontFamily: "'Stack Sans Headline', sans-serif",
       }}
@@ -30,13 +45,14 @@ export function ProductCard({ product, index }) {
 
         {/* Wishlist Button */}
         <button
+          onClick={handleWishlist}
           className="absolute top-4 right-4 z-20 flex items-center justify-center 
                      w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 
                      backdrop-blur-md border border-white/20 transition-all duration-300"
         >
           <FaHeart
             className={`transition-transform duration-300 ${
-              product.isInWishlist
+              inWishlist
                 ? "text-red-400 scale-110 drop-shadow-[0_0_10px_rgba(255,120,120,0.7)]"
                 : "text-white/70 group-hover:text-white"
             }`}
@@ -65,16 +81,13 @@ export function ProductCard({ product, index }) {
 
         {/* --- Button --- */}
         <Button
+          onClick={handleAddToCart}
           fullWidth
           radius="lg"
-          className={`text-white font-semibold tracking-wide transition-all duration-300
-            ${
-              product.isAddedToCart
-                ? "bg-gray-600/40 hover:bg-gray-600/60 backdrop-blur-md"
-                : "bg-gray-700/40 hover:bg-gray-700/60 backdrop-blur-md"
-            }`}
+          className="text-white font-semibold tracking-wide transition-all duration-300
+            bg-gray-700/40 hover:bg-gray-700/60 backdrop-blur-md"
         >
-          {product.isAddedToCart ? "View Cart" : "Add To Cart"}
+          Add To Cart
         </Button>
       </div>
     </div>
