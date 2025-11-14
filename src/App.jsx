@@ -44,6 +44,7 @@ function App() {
           <Carousel />
         </div>
       </div>
+      
 
       {/* Product Section */}
       <div className="w-full h-full py-4 flex flex-wrap justify-center items-center gap-8">
