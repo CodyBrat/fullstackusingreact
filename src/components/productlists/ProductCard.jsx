@@ -8,7 +8,19 @@ import { useCart } from "../../context/CartContext";
 export function ProductCard({ product, index }) {
   const navigate = useNavigate();
   const { addToCart, toggleWishlist, isInWishlist } = useCart();
-  const baseImgUrl = "https://nextuipro.nyc3.cdn.digitaloceanspaces.com/components-images/shoes";
+  // Using placeholder images for t-shirts - replace with your actual t-shirt images
+  const baseImgUrl = "https://images.unsplash.com/photo";
+  const tshirtImages = [
+    "-1503341960020-1aada7d7c4c8?w=400&h=400&fit=crop", // white tee
+    "-1521572163474-6864f9cf17ab?w=400&h=400&fit=crop", // black tee
+    "-1583743814966-18306a4df246?w=400&h=400&fit=crop", // grey tee
+    "-1618354691373-d851c5c3a990?w=400&h=400&fit=crop", // blue tee
+    "-1576566588028-4147f3842f27?w=400&h=400&fit=crop", // green tee
+    "-1562157873-175ce29c36f6?w=400&h=400&fit=crop", // red tee
+    "-1622445275576-721325763afe?w=400&h=400&fit=crop", // yellow tee
+    "-1529374255404-311a2a4f1fd9?w=400&h=400&fit=crop", // purple tee
+    "-1503342217505-b0a15ec3261c?w=400&h=400&fit=crop", // pink tee
+  ];
   const inWishlist = isInWishlist(product.id);
 
   const handleAddToCart = (e) => {
@@ -37,10 +49,10 @@ export function ProductCard({ product, index }) {
         <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-slate-400/5 to-transparent blur-3xl group-hover:opacity-90 opacity-60 transition-all duration-700" />
         <Image
           alt={product.title}
-          src={`${baseImgUrl}/${index + 1}.png`}
+          src={`${baseImgUrl}${tshirtImages[index % tshirtImages.length]}`}
           removeWrapper
-          className="relative z-10 h-44 w-auto object-contain transition-transform duration-700 
-                     group-hover:scale-110 group-hover:-translate-y-2"
+          className="relative z-10 h-44 w-auto object-cover transition-transform duration-700 
+                     group-hover:scale-110 group-hover:-translate-y-2 rounded-lg"
         />
 
         {/* Wishlist Button */}

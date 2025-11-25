@@ -13,7 +13,7 @@ export const Footer = () => {
               DOOZY
             </h3>
             <p className="text-white/60 text-sm">
-              Premium footwear for every lifestyle. Quality, comfort, and style in every step.
+              Premium t-shirts for every style. Quality, comfort, and design in every piece.
             </p>
             <div className="flex space-x-4 mt-4">
               <a href="#" className="text-white/60 hover:text-white transition-colors">
@@ -41,18 +41,18 @@ export const Footer = () => {
                 </Link>
               </li>
               <li>
-                <Link to="/products?category=sneakers" className="text-white/60 hover:text-white transition-colors text-sm">
-                  Sneakers
+                <Link to="/products?category=tshirts" className="text-white/60 hover:text-white transition-colors text-sm">
+                  T-Shirts
                 </Link>
               </li>
               <li>
-                <Link to="/products?category=running" className="text-white/60 hover:text-white transition-colors text-sm">
-                  Running
+                <Link to="/products?category=oversized" className="text-white/60 hover:text-white transition-colors text-sm">
+                  Oversized
                 </Link>
               </li>
               <li>
-                <Link to="/products?category=training" className="text-white/60 hover:text-white transition-colors text-sm">
-                  Training
+                <Link to="/products?category=graphic" className="text-white/60 hover:text-white transition-colors text-sm">
+                  Graphic Tees
                 </Link>
               </li>
             </ul>

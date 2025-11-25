@@ -6,25 +6,25 @@ import { FaArrowLeftLong, FaArrowRightLong } from "react-icons/fa6";
 const slides = [
   {
     id: 1,
-    title: "DESIGN SLIDER",
-    topic: "Airpod",
-    desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia, laborum cumque dignissimos quidem atque et eligendi aperiam voluptates beatae maxime.",
+    title: "NEW COLLECTION",
+    topic: "Premium Tees",
+    desc: "Discover our latest collection of premium t-shirts crafted from the finest materials for ultimate comfort and style.",
     image:
       "https://i.pinimg.com/originals/6f/02/17/6f0217fef9f9941b7c5ce600b64d84d3.gif",
   },
   {
     id: 2,
-    title: "DESIGN SLIDER",
-    topic: "Smart Watch",
-    desc: "Accusamus earum voluptatibus repellendus, dignissimos laudantium quidem odit saepe amet optio!",
+    title: "TRENDING NOW",
+    topic: "Oversized Fit",
+    desc: "Experience the perfect blend of comfort and style with our trending oversized collection.",
     image:
       "https://i.pinimg.com/originals/73/85/2c/73852c60d7fc6c659bac25075cc8b8d4.gif",
   },
   {
     id: 3,
-    title: "DESIGN SLIDER",
-    topic: "Headphones",
-    desc: "Distinctio recusandae cupiditate magnam, blanditiis amet, suscipit quod rerum saepe minima.",
+    title: "LIMITED EDITION",
+    topic: "Graphic Tees",
+    desc: "Exclusive designs from top artists. Limited quantities available. Get yours before they're gone.",
     image:
       "https://i.pinimg.com/originals/f3/3d/05/f33d05ca42e5d1934b120279e1a1c12b.gif",
   },

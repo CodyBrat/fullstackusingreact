@@ -34,7 +34,7 @@ export const Home = () => {
             transition={{ delay: 0.5 }}
             className="text-center text-white/80 text-xl mt-8 max-w-2xl mx-auto"
           >
-            Premium footwear designed for performance, style, and comfort
+            Premium t-shirts designed for comfort, style, and self-expression
           </motion.p>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -49,7 +49,7 @@ export const Home = () => {
               Shop Now
             </Link>
             <Link
-              to="/products?category=running"
+              to="/products?category=tshirts"
               className="px-8 py-3 bg-white/10 backdrop-blur-md text-white font-semibold rounded-full border border-white/20 hover:bg-white/20 transition-colors"
             >
               Explore Collections
@@ -76,7 +76,7 @@ export const Home = () => {
           <h2 className="text-4xl font-bold text-white mb-4" style={{ fontFamily: "'Bebas Neue', sans-serif" }}>
             Shop by Category
           </h2>
-          <p className="text-white/60">Find the perfect shoes for your lifestyle</p>
+          <p className="text-white/60">Find the perfect tee for your style</p>
         </motion.div>
 
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
@@ -113,7 +113,7 @@ export const Home = () => {
           <h2 className="text-4xl font-bold text-white mb-4" style={{ fontFamily: "'Bebas Neue', sans-serif" }}>
             Featured Products
           </h2>
-          <p className="text-white/60">Discover our most popular shoes</p>
+          <p className="text-white/60">Discover our most popular t-shirts</p>
         </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
